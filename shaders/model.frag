@@ -21,36 +21,36 @@ uniform int object_id;               // 对象ID（0=篮球，1=花瓶）
 
 // 输出数据（多渲染目标）
 layout(location = 0) out vec3 FragColor;     // 主颜色输出
-layout(location = 1) out vec3 UVOutput;      // UV坐标输出
-layout(location = 2) out vec3 NormalOutput;  // 视图空间法线输出
+// layout(location = 1) out vec3 UVOutput;      // UV坐标输出
+// layout(location = 2) out vec3 NormalOutput;  // 视图空间法线输出
 
 // 阴影计算函数
-float ShadowCalculation(vec4 fragPosLightSpace)
-{
-    // 执行透视除法
-    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+// float ShadowCalculation(vec4 fragPosLightSpace)
+// {
+//     // 执行透视除法
+//     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     
-    // 变换到[0,1]范围
-    projCoords = projCoords * 0.5 + 0.5;
+//     // 变换到[0,1]范围
+//     projCoords = projCoords * 0.5 + 0.5;
     
-    // 获取最近的深度值
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
+//     // 获取最近的深度值
+//     float closestDepth = texture(shadowMap, projCoords.xy).r;
     
-    // 当前片段的深度
-    float currentDepth = projCoords.z;
+//     // 当前片段的深度
+//     float currentDepth = projCoords.z;
     
-    // 阴影偏移值 - 根据对象类型调整
-    float bias = object_id == 0 ? 0.075 : 0.01;
+//     // 阴影偏移值 - 根据对象类型调整
+//     float bias = object_id == 0 ? 0.075 : 0.01;
     
-    // 计算阴影值（0=无阴影，1=完全阴影）
-    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+//     // 计算阴影值（0=无阴影，1=完全阴影）
+//     float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
     
-    // 如果在光源视锥外，不产生阴影
-    if(projCoords.z > 1.0)
-        shadow = 0.0;
+//     // 如果在光源视锥外，不产生阴影
+//     if(projCoords.z > 1.0)
+//         shadow = 0.0;
         
-    return shadow;
-}
+//     return shadow;
+// }
 
 void main()
 {
@@ -62,11 +62,11 @@ void main()
     texColor = pow(texColor, vec3(gamma)); // 从 sRGB 转到线性空间
     
     // 输出UV坐标
-    UVOutput = vec3(TexCoord, 0.0);
+    // UVOutput = vec3(TexCoord, 0.0);
     
     // 输出归一化法线
     vec3 normalizedNormal = normalize(Normal);
-    NormalOutput = normalizedNormal;
+    // NormalOutput = normalizedNormal;
     
     // 基于物理的光照计算 (PBR简化版)
     
@@ -85,10 +85,11 @@ void main()
     vec3 specular = light.specular * spec;
     
     // 4. 计算阴影
-    float shadow = ShadowCalculation(FragPosLightSpace);
+    // float shadow = ShadowCalculation(FragPosLightSpace);
     
     // 5. 合并所有光照组件
-    vec3 lighting = (ambient + (diffuse + specular) * (1.0 - shadow)) * texColor;
+    // vec3 lighting = (ambient + (diffuse + specular) * (1.0 - shadow)) * texColor;
+    vec3 lighting = (ambient + diffuse + specular) * texColor;
     
     // 应用逆伽马校正，准备输出
     FragColor = pow(lighting, vec3(1.0/gamma)); // 从线性空间转到sRGB
