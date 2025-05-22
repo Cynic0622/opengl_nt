@@ -1,0 +1,6 @@
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/cnpy.dir
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/cnpy-static.dir
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/example1.dir
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/INSTALL.dir
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/wsw/Desktop/opengl_nt/include/cnpy/build/CMakeFiles/ZERO_CHECK.dir

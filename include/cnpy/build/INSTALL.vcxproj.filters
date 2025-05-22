@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\wsw\Desktop\opengl_nt\include\cnpy\build\CMakeFiles\8a3353692870ddaf111563340563d956\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C321146E-A5BB-3C70-B3C3-C44AB60E895D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
