@@ -449,7 +449,7 @@ int main(void) {
         );
     
     // π‚‘¥ø’º‰æÿ’Û
-    float light_distance = 120;
+    float light_distance = 1200;
     glm::mat4 lightProjection = glm::ortho(-2000.0f, 2000.0f, -2000.0f, 2000.0f, 1.0f, 4000.0f);
     glm::vec3 lightPosition = glm::vec3(1200, 1200, 0);
     glm::mat4 lightView = glm::lookAt(lightPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
