@@ -38,7 +38,7 @@ int viewport_height = 1024;
 bool enable_output = false;  // 设置为 true 将保存渲染结果到文件
 int total_frame = 2000;      // 渲染帧数
 glm::vec3 background_color = glm::vec3(0.3f, 0.3f, 0.3f);
-int object_id = 0;           // 0 表示篮球；1 表示花瓶
+int object_id = 1;           // 0 表示篮球；1 表示花瓶
 
 // 输出路径
 std::string uv_output_dir = "output/uv/%04d.npy";
@@ -207,8 +207,8 @@ void error_callback(int error, const char* description) {
 
 // 窗口大小改变回调
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    window_width = width;
-    window_height = height;
+    // window_width = width;
+    // window_height = height;
     glViewport(0, 0, width, height);
 }
 
@@ -223,10 +223,10 @@ int main(void) {
     }
 
     // 配置GLFW
-    glfwWindowHint(GLFW_SAMPLES, 4);                           // 4x抗锯齿
+    // glfwWindowHint(GLFW_SAMPLES, 4);                           // 4x抗锯齿
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);             // OpenGL 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);       // 向前兼容
+    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);       // 向前兼容
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // 创建窗口
@@ -243,6 +243,7 @@ int main(void) {
 
     // 设置窗口大小变化回调
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	// glViewport(0, 0, window_width, window_height);
 
     // 加载OpenGL函数指针（通过GLAD）
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -267,6 +268,7 @@ int main(void) {
     std::string texturePath = object_id == 0 ?
         "models/basketball/NBA BASKETBALL DIFFUSE.jpg" :
         "models/vase/Vase-obj_0.jpg";
+	texturePath = "models/planet/mars.png";
 	// std::cout << texturePath.c_str() << std::endl;
     data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
     if (data)
@@ -278,12 +280,16 @@ int main(void) {
 		printf("Failed to load texture\n");
 		return -1;
     }
+  //   for (int i = 0; i < 10; ++i)
+  //   {
+		// std::cout << data[i * 3] << " " << data[i * 3 + 1] << " " << data[i * 3 + 2] << std::endl;
+  //   }
 
     // 创建纹理对象
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     stbi_image_free(data);
@@ -296,7 +302,7 @@ int main(void) {
     std::string modelPath = object_id == 0 ?
         "models/basketball/basketball.obj" :
         "models/vase/Vase-obj2.obj";
-    
+	modelPath = "models/planet/planet.obj";
     loadOBJ(modelPath.c_str(), vertices, uvs, normals);
     long vertices_size = vertices.size();
 	if (vertices_size == 0) {
@@ -372,8 +378,17 @@ int main(void) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, viewport_width, viewport_height, 0, GL_RGB, GL_FLOAT, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, view_normal, 0);
     
+	// 检查帧缓冲对象是否完整
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Framebuffer not complete!" << std::endl;
+		glfwDestroyWindow(window);
+		glfwTerminate();
+		return -1;
+	}
+
     // 指定绘制缓冲
     unsigned int DrawBuffers[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, DrawBuffers);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //
     // // 初始化背景
@@ -406,21 +421,20 @@ int main(void) {
     // glReadBuffer(GL_NONE);
     // glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //
-    // 设置投影矩阵
-    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)viewport_width / (float)viewport_height, 1.0f, 4000.0f);
+    
     
     // 设置模型矩阵
-    glm::vec3 myRotationAxis(1, 0, 0);
-    glm::mat4 translateMatrix;
-    if (object_id == 0) {
-        translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 230.0f, 0.0f));
-    }
-    else {
-        translateMatrix = glm::mat4(1.0f);
-    }
-    
-    glm::mat4 rotateMatrix = glm::rotate(-1.570796f, myRotationAxis);
-    glm::vec3 yAxis(0, 1, 0);
+    // glm::vec3 myRotationAxis(1, 0, 0);
+    // glm::mat4 translateMatrix;
+    // if (object_id == 0) {
+    //     translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 230.0f, 0.0f));
+    // }
+    // else {
+    //     translateMatrix = glm::mat4(1.0f);
+    // }
+    //
+    // glm::mat4 rotateMatrix = glm::rotate(-1.570796f, myRotationAxis);
+    // glm::vec3 yAxis(0, 1, 0);
     
     // 启用深度测试
     glEnable(GL_DEPTH_TEST);
@@ -432,22 +446,24 @@ int main(void) {
     std::filesystem::create_directories("output/frame");
     // std::filesystem::create_directories("output/extrinsics");
     //
+    glm::vec4 camerapos = glm::vec4(0, 0, 15, 1);
+    glm::mat4 View = glm::lookAt(
+        glm::vec3(camerapos),  // 相机位置
+        glm::vec3(0, 0, 0),    // 看向原点
+        glm::vec3(0, 1, 0)     // 上方向为y轴
+    );
     // 主渲染循环
     char file_name[256];
     for (int z = 0; z < total_frame && !glfwWindowShouldClose(window); z++) {
         // 更新模型矩阵 - 围绕Y轴旋转相机
-        glm::mat4 yrotateMatrix = glm::rotate(6.283184f / total_frame * z, yAxis);
+        // glm::mat4 yrotateMatrix = glm::rotate(6.283184f / total_frame * z, yAxis);
         // float dis = 1500 - z * 0.25;
         // glm::vec4 camerapos = yrotateMatrix * glm::vec4(dis * 0.5f, dis * 0.866, 0, 1);
 
 
-		glm::vec4 camerapos = glm::vec4(0, 0, 100, 1);
-        glm::mat4 View = glm::lookAt(
-            glm::vec3(camerapos),  // 相机位置
-            glm::vec3(0, 0, 0),    // 看向原点
-            glm::vec3(0, 1, 0)     // 上方向为y轴
-        );
-    
+		
+    // 设置投影矩阵
+    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 1.0f, 4000.0f);
     // 光源空间矩阵
     float light_distance = 1200;
     glm::mat4 lightProjection = glm::ortho(-2000.0f, 2000.0f, -2000.0f, 2000.0f, 1.0f, 4000.0f);
@@ -499,6 +515,9 @@ int main(void) {
     glViewport(0, 0, viewport_width, viewport_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glm::mat4 model = glm::mat4(1.f);
+    // 物体绕y轴旋转
+	model = glm::rotate(model, (float)glfwGetTime() * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+
     // 绘制背景
     modelShader.use();
     modelShader.setMat4("view", View);
@@ -532,6 +551,7 @@ int main(void) {
     modelShader.setInt("myTextureSampler", 0);
     
     glBindVertexArray(VAO);
+    
     glDrawArrays(GL_TRIANGLES, 0, vertices_size);
     glBindVertexArray(0);
     

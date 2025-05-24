@@ -58,7 +58,7 @@ bool loadOBJ(
         else if (type == "f") {
             // 使用std::string处理面信息
             std::string v1, v2, v3;
-            unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+            unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
             // 处理三角形面
             char slash;
             for (int i = 0; i < 3; i++) {
@@ -67,6 +67,16 @@ bool loadOBJ(
                 uvIndices.push_back(uvIndex[i]);
                 normalIndices.push_back(normalIndex[i]);
             }
+			// iss >> vertexIndex[3] >> slash >> uvIndex[3] >> slash >> normalIndex[3];
+			// vertexIndices.push_back(vertexIndex[2]);
+			// vertexIndices.push_back(vertexIndex[3]);
+			// vertexIndices.push_back(vertexIndex[0]);
+			// uvIndices.push_back(uvIndex[2]);
+			// uvIndices.push_back(uvIndex[3]);
+			// uvIndices.push_back(uvIndex[0]);
+			// normalIndices.push_back(normalIndex[2]);
+			// normalIndices.push_back(normalIndex[3]);
+   //          normalIndices.push_back(normalIndex[0]);
         }
     }
 

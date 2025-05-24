@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
 # File Created: 17.08.2013 12:02:46
 
-mtllib NBA BASKETBALL.mtl
+mtllib basketball.mtl
 
 #
 # object BASKET_BALL
@@ -6501,7 +6501,7 @@ vt 0.0180 0.7950
 # 1706 texture coords
 
 g BASKET_BALL
-usemtl Material__0
+usemtl Material
 s 2
 f 1/1/1 2/2/2 3/3/3 4/4/3 
 f 4/4/3 3/3/3 5/5/4 6/6/4 
