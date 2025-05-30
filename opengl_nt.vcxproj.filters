@@ -21,9 +21,6 @@
     <ClCompile Include="include\glad.c">
       <Filter>资源文件</Filter>
     </ClCompile>
-    <ClCompile Include="shader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="objLoader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -32,13 +29,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shader.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>资源文件</Filter>
     </ClInclude>
     <ClInclude Include="objLoader.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="model.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
